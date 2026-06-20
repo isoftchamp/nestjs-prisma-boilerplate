@@ -5,7 +5,7 @@ import 'reflect-metadata';
 import 'winston-daily-rotate-file';
 
 import { ENV, LOGGER_TYPE } from './shared/enums';
-import { getWinstronLogger } from './shared/helpers';
+import { type WinstonLoggerOptions, getWinstronLogger } from './shared/helpers';
 import { WorkerModule } from './worker/worker.module';
 
 async function bootstrap() {
@@ -18,7 +18,22 @@ async function bootstrap() {
     const datePattern = 'YYYY-MM-DD';
     const logLevel = configService.get(ENV.LOGGER_LEVEL);
     const dbUrl = configService.get(ENV.LOGGER_DATABASE_URL);
-    worker.useLogger(getWinstronLogger(maxFiles, datePattern, 'Worder', logLevel, dbUrl, 'worker'));
+    const appEnv = configService.get<string>(ENV.APP_ENV);
+    const loggerOptions: WinstonLoggerOptions = {
+      maxFiles,
+      datePattern,
+      defaultContext: 'Worker',
+      logLevel,
+      dbUrl,
+      dbCollectionSuffix: 'worker',
+      appEnv,
+      runtime: 'worker',
+      podName: configService.get<string>(ENV.LOGGER_POD_NAME),
+      podNamespace: configService.get<string>(ENV.LOGGER_POD_NAMESPACE),
+      nodeName: configService.get<string>(ENV.LOGGER_NODE_NAME),
+    };
+
+    worker.useLogger(getWinstronLogger(loggerOptions));
   }
 
   const port = configService.get(ENV.WORKER_PORT);

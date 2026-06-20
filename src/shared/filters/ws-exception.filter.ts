@@ -9,6 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import { Socket } from 'socket.io';
 
 import { APP_ENV, ENV, LOGGER_CONTEXT } from '../enums';
+import { sanitizeLogUrl } from '../helpers';
 
 @Catch()
 export class WsExceptionFilter implements ExceptionFilter {
@@ -29,6 +30,28 @@ export class WsExceptionFilter implements ExceptionFilter {
       client.disconnect();
     }
 
-    this.logger.error(exception, '', LOGGER_CONTEXT.GATEWAYS);
+    const trace = exception instanceof Error ? exception.stack : undefined;
+    this.logger.error(
+      {
+        message: exception instanceof Error ? exception.message : 'WebSocket exception',
+        socket: this.getSocketLogMetadata(client),
+        error: exception instanceof Error ? exception : undefined,
+      },
+      trace,
+      LOGGER_CONTEXT.GATEWAYS,
+    );
+  }
+
+  private getSocketLogMetadata(socket: Socket) {
+    return {
+      id: socket.id,
+      namespace: socket.nsp?.name,
+      path: sanitizeLogUrl(socket.handshake?.url),
+      address: socket.handshake?.address,
+      origin: socket.handshake?.headers?.origin,
+      referer: socket.handshake?.headers?.referer,
+      userAgent: socket.handshake?.headers?.['user-agent'],
+      transport: socket.conn?.transport?.name,
+    };
   }
 }

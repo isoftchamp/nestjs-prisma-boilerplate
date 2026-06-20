@@ -5,6 +5,9 @@ metadata:
   namespace: default
   labels:
     app: nest-api
+    product: nestjs-prisma-boilerplate
+    service: nestjs-api
+    runtime: web
   annotations:
     secrets.doppler.com/reload: 'true'
 spec:
@@ -20,6 +23,9 @@ spec:
     metadata:
       labels:
         app: nest-api
+        product: nestjs-prisma-boilerplate
+        service: nestjs-api
+        runtime: web
     spec:
       terminationGracePeriodSeconds: 30
       containers:
@@ -27,7 +33,20 @@ spec:
           image: '{{BASE_REPOSITORY}}/nest-api:{{SHORTHASH}}'
           envFrom:
             - secretRef:
-                name: chatchat
+                name: nest-api
+          env:
+            - name: LOGGER_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: LOGGER_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: LOGGER_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
           imagePullPolicy: Always
           ports:
             - containerPort: 5300
@@ -37,17 +56,24 @@ spec:
               path: /healthcheck
               port: 5300
             initialDelaySeconds: 10
-            periodSeconds: 5
-            timeoutSeconds: 3
+            periodSeconds: 10
+            timeoutSeconds: 10
             successThreshold: 2
             failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /healthcheck
+              port: 5300
+            periodSeconds: 10
+            timeoutSeconds: 10
+            failureThreshold: 20
           livenessProbe:
             httpGet:
               path: /healthcheck
               port: 5300
             initialDelaySeconds: 30
             periodSeconds: 10
-            timeoutSeconds: 3
+            timeoutSeconds: 10
             failureThreshold: 3
           lifecycle:
             preStop:
@@ -82,6 +108,9 @@ metadata:
   namespace: default
   labels:
     app: nest-worker
+    product: nestjs-prisma-boilerplate
+    service: nestjs-api
+    runtime: worker
   annotations:
     secrets.doppler.com/reload: 'true'
 spec:
@@ -97,6 +126,9 @@ spec:
     metadata:
       labels:
         app: nest-worker
+        product: nestjs-prisma-boilerplate
+        service: nestjs-api
+        runtime: worker
     spec:
       terminationGracePeriodSeconds: 30
       containers:
@@ -104,7 +136,20 @@ spec:
           image: '{{BASE_REPOSITORY}}/nest-api:{{SHORTHASH}}'
           envFrom:
             - secretRef:
-                name: chatchat
+                name: nest-api
+          env:
+            - name: LOGGER_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: LOGGER_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: LOGGER_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
           imagePullPolicy: Always
           ports:
             - containerPort: 5301

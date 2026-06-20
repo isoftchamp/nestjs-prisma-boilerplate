@@ -23,8 +23,19 @@ export abstract class WorkerHostProcessor extends WorkerHost {
   @OnWorkerEvent('failed')
   onFailed(job: Job) {
     const { id, name, queueName, failedReason } = job;
+    const stacktrace = job.stacktrace?.length ? job.stacktrace.join('\n') : undefined;
     this.logger.error(
-      `Job id: ${id}, name: ${name} failed in queue ${queueName}. Failed reason: ${failedReason}`,
+      {
+        message: `Job id: ${id}, name: ${name} failed in queue ${queueName}. Failed reason: ${failedReason}`,
+        job: {
+          id,
+          name,
+          queueName,
+          attemptsMade: job.attemptsMade,
+          failedReason,
+        },
+      },
+      stacktrace,
     );
   }
 

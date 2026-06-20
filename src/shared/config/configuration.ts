@@ -39,6 +39,9 @@ export const Configuration = () => ({
   [ENV.LOGGER_MAX_FILES]: process.env.LOGGER_MAX_FILES || '30d',
   [ENV.LOGGER_LEVEL]: process.env.LOGGER_LEVEL || 'warn',
   [ENV.LOGGER_DATABASE_URL]: process.env.LOGGER_DATABASE_URL,
+  [ENV.LOGGER_POD_NAME]: process.env.LOGGER_POD_NAME,
+  [ENV.LOGGER_POD_NAMESPACE]: process.env.LOGGER_POD_NAMESPACE,
+  [ENV.LOGGER_NODE_NAME]: process.env.LOGGER_NODE_NAME,
 
   [ENV.UPLOAD_PATH]: path.join(os.tmpdir(), process.env.UPLOAD_FOLDER || 'upload'),
   [ENV.BODY_SIZE]: process.env.BODY_SIZE || '10mb',

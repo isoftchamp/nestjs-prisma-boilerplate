@@ -8,7 +8,7 @@ import 'winston-daily-rotate-file';
 
 import { ENV, LOGGER_TYPE } from './shared/enums';
 import { AllExceptionFilter } from './shared/filters';
-import { getWinstronLogger } from './shared/helpers';
+import { type WinstonLoggerOptions, getWinstronLogger } from './shared/helpers';
 import { setupSwagger } from './swagger';
 import { WebModule } from './web/web.module';
 
@@ -35,7 +35,22 @@ async function bootstrap() {
     const datePattern = 'YYYY-MM-DD';
     const logLevel = configService.get(ENV.LOGGER_LEVEL);
     const dbUrl = configService.get(ENV.LOGGER_DATABASE_URL);
-    web.useLogger(getWinstronLogger(maxFiles, datePattern, 'App', logLevel, dbUrl, 'web'));
+    const appEnv = configService.get<string>(ENV.APP_ENV);
+    const loggerOptions: WinstonLoggerOptions = {
+      maxFiles,
+      datePattern,
+      defaultContext: 'App',
+      logLevel,
+      dbUrl,
+      dbCollectionSuffix: 'web',
+      appEnv,
+      runtime: 'web',
+      podName: configService.get<string>(ENV.LOGGER_POD_NAME),
+      podNamespace: configService.get<string>(ENV.LOGGER_POD_NAMESPACE),
+      nodeName: configService.get<string>(ENV.LOGGER_NODE_NAME),
+    };
+
+    web.useLogger(getWinstronLogger(loggerOptions));
   }
 
   web.useGlobalPipes(

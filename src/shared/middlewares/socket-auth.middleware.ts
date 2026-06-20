@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthService } from '@/features/auth/auth.service';
 
 import { ENV, LOGGER_CONTEXT } from '../enums';
+import { sanitizeLogUrl } from '../helpers';
 import { Socket } from '../interfaces';
 
 @Injectable()
@@ -35,8 +36,32 @@ export class SocketAuthMiddleware implements NestMiddleware {
       socket.id = socket.user?.id ?? socket.id;
       next();
     } catch (err) {
-      this.logger.error(err, '', LOGGER_CONTEXT.GATEWAYS);
+      const message = err instanceof Error ? err.message : 'Socket authentication failed';
+      this.logger.error(
+        {
+          message,
+          socket: this.getSocketLogMetadata(socket),
+          error: err instanceof Error ? err : undefined,
+        },
+        err instanceof Error ? err.stack : undefined,
+        LOGGER_CONTEXT.GATEWAYS,
+      );
       next(new UnauthorizedException());
     }
+  }
+
+  private getSocketLogMetadata(socket: Socket) {
+    const url = socket.handshake?.url;
+
+    return {
+      id: socket.id,
+      namespace: socket.nsp?.name,
+      path: sanitizeLogUrl(url),
+      address: socket.handshake?.address,
+      origin: socket.handshake?.headers?.origin,
+      referer: socket.handshake?.headers?.referer,
+      userAgent: socket.handshake?.headers?.['user-agent'],
+      transport: socket.conn?.transport?.name,
+    };
   }
 }

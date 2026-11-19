@@ -5,7 +5,6 @@
   "entryFile": "web",
   "compilerOptions": {
     "deleteOutDir": true,
-    "builder": "swc",
-    "typeCheck": true
+    "builder": "rspack"
   }
 }

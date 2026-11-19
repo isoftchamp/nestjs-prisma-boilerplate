@@ -1,6 +1,6 @@
 import { Logger, MiddlewareConsumer, Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'node:path';
+import { resolve } from 'node:path';
 
 import { CoreModule } from '../core/core.module.js';
 import { HealthcheckModule } from '../core/healthcheck/healthcheck.module.js';
@@ -15,7 +15,7 @@ import { FeaturesModule } from './features/features.module.js';
     FeaturesModule,
     WebsocketGatewayModule,
     ServeStaticModule.forRoot({
-      rootPath: join(import.meta.dirname, '../..', 'public'),
+      rootPath: resolve('public'),
       serveRoot: '/',
     }),
   ],

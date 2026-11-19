@@ -85,8 +85,7 @@
     "@nestjs/cli": "^12.0.0",
     "@nestjs/schematics": "^12.0.0",
     "@nestjs/testing": "^12.0.0",
-    "@swc/cli": "^0.7.8",
-    "@swc/core": "^1.13.5",
+    "@rspack/core": "^2.3.3",
     "@trivago/prettier-plugin-sort-imports": "6.0.2",
     "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.6",
@@ -112,13 +111,13 @@
     "socket.io-client": "^4.8.4",
     "source-map-support": "^0.5.21",
     "supertest": "^7.3.2",
-    "ts-loader": "^9.6.2",
+    "ts-checker-rspack-plugin": "^1.8.0",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^6",
     "vite": "^8.0.0",
     "vitest": "^4.1.2",
-    "webpack": "^5.105.4"
+    "webpack-node-externals": "^3.0.0"
   },
   "lint-staged": {
     "**/*.{js,mjs,cjs,jsx,ts}": [

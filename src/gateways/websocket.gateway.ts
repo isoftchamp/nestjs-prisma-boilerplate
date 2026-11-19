@@ -1,4 +1,4 @@
-import { Logger, OnModuleInit, UseFilters } from '@nestjs/common';
+import { Logger, OnApplicationShutdown, OnModuleInit, UseFilters } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
   OnGatewayConnection,
@@ -30,7 +30,12 @@ import { SocketAuthMiddleware } from '../shared/middlewares/index.js';
 })
 @UseFilters(WsExceptionFilter)
 export class WebsocketGateway
-  implements OnModuleInit, OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
+  implements
+    OnModuleInit,
+    OnApplicationShutdown,
+    OnGatewayInit,
+    OnGatewayConnection,
+    OnGatewayDisconnect
 {
   private readonly logger = new Logger(WebsocketGateway.name);
 
@@ -80,7 +85,7 @@ export class WebsocketGateway
         this.logger.error('Redis Sub Client Error', err, LOGGER_CONTEXT.GATEWAYS),
       );
 
-      await Promise.allSettled([this.redisPubClient.connect(), this.redisSubClient.connect()]);
+      await Promise.all([this.redisPubClient.connect(), this.redisSubClient.connect()]);
 
       // Attach the Redis adapter to the server
       if (this.redisPubClient && this.redisSubClient) {
@@ -96,6 +101,13 @@ export class WebsocketGateway
 
     this.server.use((socket, next) => this.socketAuthMiddleware.use(socket, next));
     this.logger.log(`${WebsocketGateway.name}: Initialized`, LOGGER_CONTEXT.GATEWAYS);
+  }
+
+  async onApplicationShutdown() {
+    await Promise.all([
+      this.closeRedisClient(this.redisSubClient),
+      this.closeRedisClient(this.redisPubClient),
+    ]);
   }
 
   handleConnection(client: Socket) {
@@ -124,5 +136,19 @@ export class WebsocketGateway
       event: 'pong',
       data,
     };
+  }
+
+  private async closeRedisClient(
+    client?: ReturnType<typeof createClient> | ReturnType<typeof createCluster>,
+  ) {
+    if (!client?.isOpen) {
+      return;
+    }
+
+    try {
+      await client.quit();
+    } catch {
+      client.disconnect();
+    }
   }
 }

@@ -6,6 +6,7 @@ import { type Request, type Response, json, urlencoded } from 'express';
 import 'reflect-metadata';
 import 'winston-daily-rotate-file';
 
+import { RuntimeLifecycleService } from './core/redis/redis-resources.service.js';
 import { ENV, LOGGER_TYPE } from './shared/enums/index.js';
 import { AllExceptionFilter } from './shared/filters/index.js';
 import { type WinstonLoggerOptions, getWinstronLogger } from './shared/helpers/index.js';
@@ -51,7 +52,9 @@ async function bootstrap() {
       nodeName: configService.get<string>(ENV.LOGGER_NODE_NAME),
     };
 
-    web.useLogger(getWinstronLogger(loggerOptions));
+    const winstonLogger = getWinstronLogger(loggerOptions);
+    web.get(RuntimeLifecycleService).setLogger(winstonLogger);
+    web.useLogger(winstonLogger);
   }
 
   web.useGlobalPipes(

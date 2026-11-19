@@ -41,13 +41,13 @@ describe('WebsocketGateway', () => {
     app.useWebSocketAdapter(new IoAdapter(app));
     // Get the gateway instance from the app instance
     gateway = app.get<WebsocketGateway>(WebsocketGateway);
+    await app.listen(0);
+
     // Create a new client that will interact with the gateway
-    ioClient = io('http://localhost:6000', {
+    ioClient = io(await app.getUrl(), {
       autoConnect: false,
       transports: ['websocket', 'polling'],
     });
-
-    await app.listen(6000);
   });
 
   afterAll(async () => {

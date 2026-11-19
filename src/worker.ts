@@ -4,12 +4,14 @@ import { NestFactory } from '@nestjs/core';
 import 'reflect-metadata';
 import 'winston-daily-rotate-file';
 
+import { RuntimeLifecycleService } from './core/redis/redis-resources.service.js';
 import { ENV, LOGGER_TYPE } from './shared/enums/index.js';
 import { type WinstonLoggerOptions, getWinstronLogger } from './shared/helpers/index.js';
 import { WorkerModule } from './worker/worker.module.js';
 
 async function bootstrap() {
   const worker = await NestFactory.create(WorkerModule);
+  worker.enableShutdownHooks();
 
   const configService = worker.get(ConfigService);
 
@@ -33,7 +35,9 @@ async function bootstrap() {
       nodeName: configService.get<string>(ENV.LOGGER_NODE_NAME),
     };
 
-    worker.useLogger(getWinstronLogger(loggerOptions));
+    const winstonLogger = getWinstronLogger(loggerOptions);
+    worker.get(RuntimeLifecycleService).setLogger(winstonLogger);
+    worker.useLogger(winstonLogger);
   }
 
   const port = configService.get(ENV.WORKER_PORT);

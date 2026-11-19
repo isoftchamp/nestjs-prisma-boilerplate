@@ -1,10 +1,10 @@
-import { type INestApplication } from '@nestjs/common/interfaces';
+import { type INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { timingSafeEqual } from 'crypto';
 import { type NextFunction, type Request, type Response } from 'express';
 
-import { ENV } from './shared/enums';
+import { ENV } from './shared/enums/index.js';
 
 function normalizeSwaggerPath(swaggerPath: string): string {
   const normalizedPath = swaggerPath.startsWith('/') ? swaggerPath : `/${swaggerPath}`;

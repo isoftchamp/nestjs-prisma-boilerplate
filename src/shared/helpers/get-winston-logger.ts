@@ -4,8 +4,8 @@ import { format, transports } from 'winston';
 import { MongoDB } from 'winston-mongodb';
 import type * as Transport from 'winston-transport';
 
-import { APP_ENV } from '../enums';
-import { getCurrentRequestLogContext } from './request-log-context';
+import { APP_ENV } from '../enums/index.js';
+import { getCurrentRequestLogContext } from './request-log-context.js';
 
 const SPLAT = Symbol.for('splat');
 const RESERVED_LOG_METADATA_KEYS = new Set([

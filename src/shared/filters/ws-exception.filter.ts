@@ -8,8 +8,8 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { Socket } from 'socket.io';
 
-import { APP_ENV, ENV, LOGGER_CONTEXT } from '../enums';
-import { sanitizeLogUrl } from '../helpers';
+import { APP_ENV, ENV, LOGGER_CONTEXT } from '../enums/index.js';
+import { sanitizeLogUrl } from '../helpers/index.js';
 
 @Catch()
 export class WsExceptionFilter implements ExceptionFilter {

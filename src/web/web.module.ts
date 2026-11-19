@@ -1,13 +1,12 @@
 import { Logger, MiddlewareConsumer, Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
+import { join } from 'node:path';
 
-import { CoreModule } from '@/core/core.module';
-import { HealthcheckModule } from '@/core/healthcheck/healthcheck.module';
-import { WebsocketGatewayModule } from '@/gateways/websocket.gateway.module';
-import { RequestLoggerMiddleware } from '@/shared/middlewares';
-
-import { FeaturesModule } from './features/features.module';
+import { CoreModule } from '../core/core.module.js';
+import { HealthcheckModule } from '../core/healthcheck/healthcheck.module.js';
+import { WebsocketGatewayModule } from '../gateways/websocket.gateway.module.js';
+import { RequestLoggerMiddleware } from '../shared/middlewares/index.js';
+import { FeaturesModule } from './features/features.module.js';
 
 @Module({
   imports: [
@@ -16,7 +15,7 @@ import { FeaturesModule } from './features/features.module';
     FeaturesModule,
     WebsocketGatewayModule,
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '../..', 'public'),
+      rootPath: join(import.meta.dirname, '../..', 'public'),
       serveRoot: '/',
     }),
   ],

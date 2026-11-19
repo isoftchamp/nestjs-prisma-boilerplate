@@ -1,28 +1,23 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "resolvePackageJsonExports": true,
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
+    "target": "ES2023",
     "sourceMap": true,
     "outDir": "./build",
-    "baseUrl": "./",
-    "paths": {
-      "@/gateways/*": ["./src/gateways/*"],
-      "@/shared/*": ["./src/shared/*"],
-      "@/worker/*": ["./src/worker/*"],
-      "@/core/*": ["./src/core/*"],
-      "@/*": ["./src/web/*"]
-    },
+    "rootDir": ".",
+    "types": ["vitest/globals", "node"],
+    "strict": true,
+    "isolatedModules": true,
     "incremental": true,
     "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
+    "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true
   }

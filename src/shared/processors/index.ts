@@ -1,1 +1,1 @@
-export * from './work-host.processor';
+export * from './work-host.processor.js';

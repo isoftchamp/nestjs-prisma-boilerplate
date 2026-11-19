@@ -54,7 +54,7 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: node:iron-alpine
+    container: node:krypton-alpine
     services:
       redis:
         image: redis
@@ -71,10 +71,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
-    defaults:
-      run:
-        working-directory: ./src
 
     steps:
       - name: Checkout code

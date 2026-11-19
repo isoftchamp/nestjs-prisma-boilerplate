@@ -1,10 +1,11 @@
 import { type INestApplication } from '@nestjs/common';
 import { Test, type TestingModule } from '@nestjs/testing';
 import request from 'supertest';
+import { vi } from 'vitest';
 
-import { WebModule } from '@/web.module';
+import { WebModule } from '../src/web/web.module.js';
 
-jest.setTimeout(30000);
+vi.setConfig({ testTimeout: 30000 });
 
 describe('Application (e2e)', () => {
   let app: INestApplication;

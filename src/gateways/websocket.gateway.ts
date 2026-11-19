@@ -18,9 +18,9 @@ import {
   REDIS_MODE,
   WEBSOCKET_CORS_ORIGINS,
   WEBSOCKET_TRANSPORTS,
-} from '@/shared/enums';
-import { WsExceptionFilter } from '@/shared/filters';
-import { SocketAuthMiddleware } from '@/shared/middlewares';
+} from '../shared/enums/index.js';
+import { WsExceptionFilter } from '../shared/filters/index.js';
+import { SocketAuthMiddleware } from '../shared/middlewares/index.js';
 
 @WebSocketGateway({
   transports: WEBSOCKET_TRANSPORTS,
@@ -34,19 +34,19 @@ export class WebsocketGateway
 {
   private readonly logger = new Logger(WebsocketGateway.name);
 
-  private redisPubClient;
-  private redisSubClient;
+  private redisPubClient!: ReturnType<typeof createClient> | ReturnType<typeof createCluster>;
+  private redisSubClient!: ReturnType<typeof createClient> | ReturnType<typeof createCluster>;
 
   private socketClients: Set<Socket> = new Set();
 
-  @WebSocketServer() server: Server;
+  @WebSocketServer() server!: Server;
 
   constructor(
     private readonly configService: ConfigService,
     private readonly socketAuthMiddleware: SocketAuthMiddleware,
   ) {}
 
-  afterInit(_server: any) {}
+  afterInit(_server: Server) {}
 
   async onModuleInit() {
     try {
@@ -115,7 +115,7 @@ export class WebsocketGateway
   }
 
   @SubscribeMessage('ping')
-  handlePing(client: Socket, data) {
+  handlePing(client: Socket, data: unknown) {
     this.logger.log(
       `${WebsocketGateway.name}: ping from client id: ${client.id}, Payload: ${data}`,
     );

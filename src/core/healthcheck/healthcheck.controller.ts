@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { InternalUrl, ResponseMessage } from '@/shared/enums';
+import { InternalUrl, ResponseMessage } from '../../shared/enums/index.js';
 
 @Controller(InternalUrl.HEALTH_CHECK)
 @ApiTags('Public')

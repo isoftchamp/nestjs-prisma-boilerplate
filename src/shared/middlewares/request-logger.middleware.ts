@@ -1,13 +1,13 @@
 import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 
-import { InternalUrl, LOGGER_CONTEXT } from '../enums';
+import { InternalUrl, LOGGER_CONTEXT } from '../enums/index.js';
 import {
   createRequestLogContext,
   getLogUserId,
   runWithRequestLogContext,
   sanitizeLogUrl,
-} from '../helpers';
+} from '../helpers/index.js';
 
 @Injectable()
 export class RequestLoggerMiddleware implements NestMiddleware {

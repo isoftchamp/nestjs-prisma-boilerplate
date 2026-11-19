@@ -1,2 +1,2 @@
-export * from './query.interace';
-export * from './socket.interface';
+export * from './query.interace.js';
+export * from './socket.interface.js';

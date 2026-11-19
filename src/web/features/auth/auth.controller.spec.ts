@@ -3,13 +3,12 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { CoreModule } from '@/core/core.module';
-import { ENV, GENDER } from '@/shared/enums';
-
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-import { JwtStrategy } from './strategies/jwt.strategy';
-import { LocalStrategy } from './strategies/local.strategy';
+import { CoreModule } from '../../../core/core.module.js';
+import { ENV, GENDER } from '../../../shared/enums/index.js';
+import { AuthController } from './auth.controller.js';
+import { AuthService } from './auth.service.js';
+import { JwtStrategy } from './strategies/jwt.strategy.js';
+import { LocalStrategy } from './strategies/local.strategy.js';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -55,7 +54,7 @@ describe('AuthController', () => {
   });
 
   it('should be able to signup', async () => {
-    jest.spyOn(authService, 'saveUser').mockImplementationOnce(async () => ({
+    vi.spyOn(authService, 'saveUser').mockImplementationOnce(async () => ({
       id: '1',
       email: 'hello@hello.com',
       password: 'hello',

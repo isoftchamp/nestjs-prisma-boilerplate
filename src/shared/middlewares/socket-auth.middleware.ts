@@ -1,12 +1,12 @@
 import { Injectable, Logger, NestMiddleware, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { type ExtendedError } from 'socket.io';
 
-import { AuthService } from '@/features/auth/auth.service';
-
-import { ENV, LOGGER_CONTEXT } from '../enums';
-import { sanitizeLogUrl } from '../helpers';
-import { Socket } from '../interfaces';
+import { AuthService } from '../../web/features/auth/auth.service.js';
+import { ENV, LOGGER_CONTEXT } from '../enums/index.js';
+import { sanitizeLogUrl } from '../helpers/index.js';
+import { Socket } from '../interfaces/index.js';
 
 @Injectable()
 export class SocketAuthMiddleware implements NestMiddleware {
@@ -17,7 +17,7 @@ export class SocketAuthMiddleware implements NestMiddleware {
     private readonly logger: Logger,
   ) {}
 
-  async use(socket: Socket, next: (err?: unknown) => void): Promise<void> {
+  async use(socket: Socket, next: (err?: ExtendedError) => void): Promise<void> {
     const token =
       typeof socket.handshake?.query?.token === 'string'
         ? socket.handshake?.query?.token
@@ -28,12 +28,15 @@ export class SocketAuthMiddleware implements NestMiddleware {
     }
 
     try {
-      const secret = this.configService.get(ENV.USER_SECRET);
+      const secret = this.configService.getOrThrow<string>(ENV.USER_SECRET);
       const payload = this.jwtService.verify(token, {
         secret,
       });
-      socket.user = await this.authService.findUserByEmail(payload.email); // Attach user info for further usage
-      socket.id = socket.user?.id ?? socket.id;
+      const user = await this.authService.findUserByEmail(payload.email);
+      if (!user) {
+        throw new UnauthorizedException();
+      }
+      socket.user = user; // Attach user info for further usage
       next();
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Socket authentication failed';

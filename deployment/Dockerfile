@@ -39,6 +39,7 @@ WORKDIR /app
 COPY --chown=node:node --from=production-dependencies /app/node_modules ./node_modules
 COPY --chown=node:node --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --chown=node:node --from=builder /app/build ./build
+COPY --chown=node:node --from=builder /app/public ./public
 COPY --chown=node:node --from=production-dependencies /app/package.json ./
 
 RUN mkdir -p /app/logs && chown node:node /app/logs

@@ -3,8 +3,8 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { Global, Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-import { Configuration } from '../shared/config/index.js';
-import { ENV, FLOW, QUEUE } from '../shared/enums/index.js';
+import { Configuration } from '@/shared/config/index.js';
+import { ENV, FLOW, QUEUE } from '@/shared/enums/index.js';
 import { DatabaseModule } from './database/database.module.js';
 import { QueueModule } from './queue/queue.module.js';
 import { RedisResourcesModule } from './redis/redis-resources.module.js';

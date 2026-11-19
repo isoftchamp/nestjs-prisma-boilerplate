@@ -1,8 +1,8 @@
 import { Logger, MiddlewareConsumer, Module } from '@nestjs/common';
 
-import { CoreModule } from '../core/core.module.js';
-import { HealthcheckModule } from '../core/healthcheck/healthcheck.module.js';
-import { RequestLoggerMiddleware } from '../shared/middlewares/index.js';
+import { CoreModule } from '@/core/core.module.js';
+import { HealthcheckModule } from '@/core/healthcheck/healthcheck.module.js';
+import { RequestLoggerMiddleware } from '@/shared/middlewares/index.js';
 import { AuthModule } from './auth/auth.module.js';
 
 @Module({

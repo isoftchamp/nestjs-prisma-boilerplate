@@ -12,7 +12,7 @@ import type { Cache } from 'cache-manager';
 import { Cluster as IORedisCluster } from 'ioredis';
 import Keyv from 'keyv';
 
-import { CACHE_TYPE, ENV, REDIS_MODE } from '../../shared/enums/index.js';
+import { CACHE_TYPE, ENV, REDIS_MODE } from '@/shared/enums/index.js';
 
 type BullRedisConnection = IORedisCluster | { url: string };
 

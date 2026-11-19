@@ -3,9 +3,9 @@ import { IoAdapter } from '@nestjs/platform-socket.io';
 import { Test } from '@nestjs/testing';
 import { Socket, io } from 'socket.io-client';
 
-import { CoreModule } from '../core/core.module.js';
-import { SocketAuthMiddleware } from '../shared/middlewares/index.js';
-import { AuthModule } from '../web/features/auth/auth.module.js';
+import { CoreModule } from '@/core/core.module.js';
+import { SocketAuthMiddleware } from '@/shared/middlewares/index.js';
+import { AuthModule } from '@/web/features/auth/auth.module.js';
 import { WebsocketGateway } from './websocket.gateway.js';
 
 const mockSocketAuthMiddleware = {

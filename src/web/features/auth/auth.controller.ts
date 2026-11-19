@@ -4,10 +4,10 @@ import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { type User as PrismaUser } from '@prisma/client';
 import { Queue } from 'bullmq';
 
-import { ApiMyResponse, User } from '../../../shared/decorators/index.js';
-import { CreateUserDto, LoginDto, LoginSuccessDto, UserDto } from '../../../shared/dtos/index.js';
-import { AUTH_JOB, QUEUE } from '../../../shared/enums/index.js';
-import { LocalAuthGuard } from '../../../shared/guards/index.js';
+import { ApiMyResponse, User } from '@/shared/decorators/index.js';
+import { CreateUserDto, LoginDto, LoginSuccessDto, UserDto } from '@/shared/dtos/index.js';
+import { AUTH_JOB, QUEUE } from '@/shared/enums/index.js';
+import { LocalAuthGuard } from '@/shared/guards/index.js';
 import { AuthService } from './auth.service.js';
 
 @Controller('auth')

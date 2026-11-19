@@ -47,10 +47,12 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
+            - name: HEALTHCHECK_PORT
+              value: '5300'
           imagePullPolicy: Always
           ports:
             - containerPort: 5300
-          args: ['yarn', 'prod']
+          command: ['node', 'build/web.js']
           readinessProbe:
             httpGet:
               path: /healthcheck
@@ -62,14 +64,14 @@ spec:
             failureThreshold: 3
           startupProbe:
             httpGet:
-              path: /healthcheck
+              path: /healthcheck/live
               port: 5300
             periodSeconds: 10
             timeoutSeconds: 10
             failureThreshold: 20
           livenessProbe:
             httpGet:
-              path: /healthcheck
+              path: /healthcheck/live
               port: 5300
             initialDelaySeconds: 30
             periodSeconds: 10
@@ -150,10 +152,33 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
+            - name: HEALTHCHECK_PORT
+              value: '5301'
           imagePullPolicy: Always
           ports:
             - containerPort: 5301
-          args: ['yarn', 'prod:worker']
+          command: ['node', 'build/worker.js']
+          readinessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 5301
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /healthcheck/live
+              port: 5301
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 20
+          livenessProbe:
+            httpGet:
+              path: /healthcheck/live
+              port: 5301
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
           lifecycle:
             preStop:
               exec:

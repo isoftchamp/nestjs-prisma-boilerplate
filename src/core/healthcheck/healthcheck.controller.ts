@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { HealthCheck, HealthCheckService, PrismaHealthIndicator } from '@nestjs/terminus';
 
-import { InternalUrl } from '../../shared/enums/index.js';
+import { InternalUrl } from '@/shared/enums/index.js';
 import { PrismaService } from '../database/prisma.service.js';
 import { CacheHealthIndicator } from './cache.health-indicator.js';
 

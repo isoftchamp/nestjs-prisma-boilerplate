@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { type ExtendedError } from 'socket.io';
 
-import { AuthService } from '../../web/features/auth/auth.service.js';
+import { AuthService } from '@/web/features/auth/auth.service.js';
 import { ENV, LOGGER_CONTEXT } from '../enums/index.js';
 import { sanitizeLogUrl } from '../helpers/index.js';
 import { Socket } from '../interfaces/index.js';

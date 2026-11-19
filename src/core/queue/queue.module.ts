@@ -1,7 +1,7 @@
 import { BullModule } from '@nestjs/bullmq';
 import { DynamicModule, Module } from '@nestjs/common';
 
-import { ConfigurableModuleClass, OPTIONS_TYPE } from './queue.module-definition';
+import { ConfigurableModuleClass, OPTIONS_TYPE } from './queue.module-definition.js';
 
 @Module({})
 export class QueueModule extends ConfigurableModuleClass {

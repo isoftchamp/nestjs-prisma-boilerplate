@@ -2,9 +2,9 @@ import { Processor } from '@nestjs/bullmq';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Job } from 'bullmq';
 
-import { UserDto } from '@/shared/dtos';
-import { AUTH_JOB, QUEUE } from '@/shared/enums';
-import { WorkerHostProcessor } from '@/shared/processors';
+import { UserDto } from '../../../shared/dtos/index.js';
+import { AUTH_JOB, QUEUE } from '../../../shared/enums/index.js';
+import { WorkerHostProcessor } from '../../../shared/processors/index.js';
 
 @Processor(QUEUE.AUTH_QUEUE)
 @Injectable()

@@ -4,9 +4,9 @@ import { NestFactory } from '@nestjs/core';
 import 'reflect-metadata';
 import 'winston-daily-rotate-file';
 
-import { ENV, LOGGER_TYPE } from './shared/enums';
-import { type WinstonLoggerOptions, getWinstronLogger } from './shared/helpers';
-import { WorkerModule } from './worker/worker.module';
+import { ENV, LOGGER_TYPE } from './shared/enums/index.js';
+import { type WinstonLoggerOptions, getWinstronLogger } from './shared/helpers/index.js';
+import { WorkerModule } from './worker/worker.module.js';
 
 async function bootstrap() {
   const worker = await NestFactory.create(WorkerModule);

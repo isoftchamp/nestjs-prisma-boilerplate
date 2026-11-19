@@ -1,9 +1,8 @@
 import * as os from 'os';
 import * as path from 'path';
 
-import { APP_ENV, ENV } from '@/shared/enums';
-
-import { transformToBoolean, transformToInt } from '../helpers';
+import { APP_ENV, ENV } from '../enums/index.js';
+import { transformToBoolean, transformToInt } from '../helpers/index.js';
 
 export const Configuration = () => ({
   [ENV.APP_NAME]: process.env.APP_NAME || 'nestjs-prisma-boilerplate',
@@ -28,7 +27,7 @@ export const Configuration = () => ({
   [ENV.DATABASE_URL]: process.env.DATABASE_URL,
 
   [ENV.CACHE_MODE]: process.env.CACHE_MODE || 'redis',
-  [ENV.CACHE_TTL]: transformToInt(process.env.CACHE_TTL || '3600'),
+  [ENV.CACHE_TTL]: transformToInt(process.env.CACHE_TTL || '3600000'),
 
   [ENV.USE_QUEUE]: transformToBoolean(process.env.USE_QUEUE || 'true'),
 

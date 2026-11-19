@@ -1,6 +1,6 @@
 const assetsSuffix = 'svg|png|css|scss';
 
-module.exports = {
+export default {
   arrowParens: 'always',
   singleQuote: true,
   trailingComma: 'all',
@@ -9,12 +9,12 @@ module.exports = {
   printWidth: 100,
   plugins: ['@trivago/prettier-plugin-sort-imports', 'prettier-plugin-prisma'],
   importOrder: [
-    `^(?!(@\/)|(\\.)|(\\..)[a-z@]).(?!.*\\.(${assetsSuffix})$)`, // All imports from node_modules
-    `^@\/(?!.*\\.(${assetsSuffix})$)`, // All imports starts with "@/web/"
-    `^\\\..(?!.*\\.(${assetsSuffix})$)|^\\\.$`, // All imports starts with "."
-    `^(?!(@\/)|(\\.)|(\\..)[a-z@]).*\\.(${assetsSuffix})$`, // All asserts imports from node_modules
-    `^@\/.*\\\.(${assetsSuffix})$`, // All assets imports starts with "@/web/"
-    `\\\.(${assetsSuffix})$`, // All assets imports starts with "."
+    `^(?!(@/)|(\\.)|(\\..)[a-z@]).(?!.*\\.(${assetsSuffix})$)`, // All imports from node_modules
+    `^@/(?!.*\\.(${assetsSuffix})$)`, // All imports starts with "@/web/"
+    `^\\..(?!.*\\.(${assetsSuffix})$)|^\\.$`, // All imports starts with "."
+    `^(?!(@/)|(\\.)|(\\..)[a-z@]).*\\.(${assetsSuffix})$`, // All asserts imports from node_modules
+    `^@/.*\\.(${assetsSuffix})$`, // All assets imports starts with "@/web/"
+    `\\.(${assetsSuffix})$`, // All assets imports starts with "."
   ],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,

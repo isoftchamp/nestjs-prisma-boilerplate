@@ -2,9 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 
-import { ENV } from '@/shared/enums';
-
-import { AuthProcessor } from './processors/auth.processor';
+import { ENV } from '../../shared/enums/index.js';
+import { AuthProcessor } from './processors/auth.processor.js';
 
 @Module({
   imports: [

@@ -9,8 +9,8 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { Prisma } from '@prisma/client';
 
-import { APP_ENV, ENV, LOGGER_CONTEXT } from '../enums';
-import { getLogUserId, sanitizeLogUrl } from '../helpers';
+import { APP_ENV, ENV, LOGGER_CONTEXT } from '../enums/index.js';
+import { getLogUserId, sanitizeLogUrl } from '../helpers/index.js';
 
 type RequestLogSource = {
   method?: string;
@@ -27,6 +27,15 @@ type ResponseWithLocals = {
     json: (body: unknown) => unknown;
   };
 };
+
+interface ErrorResponse {
+  statusCode: number;
+  timestamp: string;
+  path: string;
+  message: string;
+  body?: unknown;
+  error?: unknown;
+}
 
 @Catch()
 export class AllExceptionFilter implements ExceptionFilter {
@@ -58,19 +67,19 @@ export class AllExceptionFilter implements ExceptionFilter {
           break;
       }
     }
-    const result = {
+    const result: ErrorResponse = {
       statusCode: status,
       timestamp: new Date().toISOString(),
-      path: sanitizeLogUrl(request.originalUrl || request.url),
+      path: sanitizeLogUrl(request.originalUrl || request.url) || '',
       message,
     };
 
-    if (exception['response']) {
-      result['body'] = exception['response'];
+    if (exception instanceof HttpException) {
+      result.body = exception.getResponse();
     }
 
     if (this.configService.get<string>(ENV.APP_ENV) === APP_ENV.DEV) {
-      result['error'] = exception;
+      result.error = exception;
     }
 
     const trace = exception instanceof Error ? exception.stack : undefined;

@@ -1,2 +1,2 @@
-export * from './login.dto';
-export * from './user.dto';
+export * from './login.dto.js';
+export * from './user.dto.js';

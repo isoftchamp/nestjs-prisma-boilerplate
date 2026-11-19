@@ -2,23 +2,23 @@ import { ForbiddenException, Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import cookieParser from 'cookie-parser';
-import { json, urlencoded } from 'express';
+import { type Request, type Response, json, urlencoded } from 'express';
 import 'reflect-metadata';
 import 'winston-daily-rotate-file';
 
-import { ENV, LOGGER_TYPE } from './shared/enums';
-import { AllExceptionFilter } from './shared/filters';
-import { type WinstonLoggerOptions, getWinstronLogger } from './shared/helpers';
-import { setupSwagger } from './swagger';
-import { WebModule } from './web/web.module';
+import { ENV, LOGGER_TYPE } from './shared/enums/index.js';
+import { AllExceptionFilter } from './shared/filters/index.js';
+import { type WinstonLoggerOptions, getWinstronLogger } from './shared/helpers/index.js';
+import { setupSwagger } from './swagger.js';
+import { WebModule } from './web/web.module.js';
 
-const rawBodyBuffer = (req, _res, buffer, _encoding) => {
+const rawBodyBuffer = (req: Request, _res: Response, buffer: Buffer, _encoding: string) => {
   if (!req.headers['stripe-signature']) {
     return;
   }
 
   if (buffer && buffer.length) {
-    req.rawBody = buffer;
+    (req as Request & { rawBody?: Buffer }).rawBody = buffer;
   }
 };
 
@@ -26,6 +26,7 @@ async function bootstrap() {
   const web = await NestFactory.create(WebModule, {
     rawBody: true,
   });
+  web.enableShutdownHooks();
 
   const configService = web.get(ConfigService);
   const logger = web.get(Logger);
@@ -77,7 +78,10 @@ async function bootstrap() {
   setupSwagger(web);
 
   web.enableCors({
-    origin: (origin, callback) => {
+    origin: (
+      origin: string | undefined,
+      callback: (error: Error | null, origin?: boolean | string) => void,
+    ) => {
       const allowedCors = (configService.get(ENV.ALLOWED_CORS) || '').split(',');
 
       if (!origin || allowedCors.includes(origin)) {

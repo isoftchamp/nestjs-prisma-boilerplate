@@ -18,9 +18,9 @@ import {
   REDIS_MODE,
   WEBSOCKET_CORS_ORIGINS,
   WEBSOCKET_TRANSPORTS,
-} from '../shared/enums/index.js';
-import { WsExceptionFilter } from '../shared/filters/index.js';
-import { SocketAuthMiddleware } from '../shared/middlewares/index.js';
+} from '@/shared/enums/index.js';
+import { WsExceptionFilter } from '@/shared/filters/index.js';
+import { SocketAuthMiddleware } from '@/shared/middlewares/index.js';
 
 @WebSocketGateway({
   transports: WEBSOCKET_TRANSPORTS,

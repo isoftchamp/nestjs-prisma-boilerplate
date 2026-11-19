@@ -12,6 +12,9 @@
     "sourceMap": true,
     "outDir": "./build",
     "rootDir": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
     "types": ["vitest/globals", "node"],
     "strict": true,
     "isolatedModules": true,

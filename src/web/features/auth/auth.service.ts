@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Prisma, User } from '@prisma/client';
 import { type HashOptions, argon2id, hash, verify } from 'argon2';
 
-import { PrismaService } from '../../../core/database/prisma.service.js';
+import { PrismaService } from '@/core/database/prisma.service.js';
 
 export type AuthenticatedUser = Omit<User, 'password'>;
 

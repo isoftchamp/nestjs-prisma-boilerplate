@@ -3,8 +3,8 @@ import { TsCheckerRspackPlugin } from 'ts-checker-rspack-plugin';
 
 export default (options) => ({
   entry: {
-    web: resolve('src/web.ts'),
-    worker: resolve('src/worker.ts'),
+    'api/main': resolve('src/api/main.ts'),
+    'worker/main': resolve('src/worker/main.ts'),
   },
   output: {
     ...options.output,

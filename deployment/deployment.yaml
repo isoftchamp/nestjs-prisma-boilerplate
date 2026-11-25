@@ -52,7 +52,7 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 5300
-          command: ['node', 'build/web.js']
+          command: ['node', 'build/api/main.js']
           readinessProbe:
             httpGet:
               path: /healthcheck
@@ -157,7 +157,7 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 5301
-          command: ['node', 'build/worker.js']
+          command: ['node', 'build/worker/main.js']
           readinessProbe:
             httpGet:
               path: /healthcheck

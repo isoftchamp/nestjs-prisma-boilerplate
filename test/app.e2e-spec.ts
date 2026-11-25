@@ -4,9 +4,9 @@ import { Test, type TestingModule } from '@nestjs/testing';
 import request from 'supertest';
 import { vi } from 'vitest';
 
-import { PrismaService } from '@/core/database/prisma.service.js';
-import { CacheHealthIndicator } from '@/core/healthcheck/cache.health-indicator.js';
-import { HealthcheckController } from '@/core/healthcheck/healthcheck.controller.js';
+import { PrismaService } from '@/data-access/prisma.service.js';
+import { CacheHealthIndicator } from '@/health/cache.health-indicator.js';
+import { HealthController } from '@/health/health.controller.js';
 
 vi.setConfig({ testTimeout: 30000 });
 
@@ -18,7 +18,7 @@ describe('Application (e2e)', () => {
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [TerminusModule],
-      controllers: [HealthcheckController],
+      controllers: [HealthController],
       providers: [
         { provide: PrismaService, useValue: {} },
         {

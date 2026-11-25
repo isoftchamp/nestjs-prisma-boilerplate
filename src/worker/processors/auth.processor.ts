@@ -1,0 +1,29 @@
+import { Processor } from '@nestjs/bullmq';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { Job } from 'bullmq';
+
+import { AUTH_JOB, type SendSignupEmailJob } from '@/domain/auth/auth.jobs.js';
+import { QUEUE } from '@/queue/queue.constants.js';
+import { WorkerHostProcessor } from '@/queue/worker-host.processor.js';
+
+@Processor(QUEUE.AUTH_QUEUE)
+@Injectable()
+export class AuthProcessor extends WorkerHostProcessor {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  process(job: Job<SendSignupEmailJob, number, string>): Promise<any> {
+    const { email } = job.data;
+    switch (job.name) {
+      case AUTH_JOB.SEND_SIGNUP_EMAIL:
+        // TODO: mockup background job, update to real logic
+        return new Promise((resolve, _reject) => {
+          setTimeout(() => {
+            job.updateProgress(50);
+          }, 5000);
+          setTimeout(() => {
+            resolve([email, 'registered']);
+          }, 10000);
+        });
+    }
+    throw new BadRequestException(`Unknown job name: ${job.name}`);
+  }
+}
